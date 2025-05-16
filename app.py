@@ -23,7 +23,7 @@ else:
 
 try:
     model = CLIPModel.from_pretrained(model_name).to(device)
-    processor = CLIPProcessor.from_pretrained(model_name, use_fast=True)
+    processor = CLIPProcessor.from_pretrained(model_name)
     print("CLIP model and processor loaded.")
     MODEL_LOADED = True
 except Exception as e:
@@ -143,7 +143,6 @@ def view_favorites(favorites_list_state):
 # 模拟下载功能：Gradio 本身不直接处理文件下载到用户任意位置，
 # 这里我们将图片复制到一个临时文件夹，并返回该路径，用户可以从那里获取。
 # 更健壮的下载通常需要一个简单的HTTP服务器或Gradio的文件组件。
-
 def download_image_action(image_path):
     if image_path and os.path.exists(image_path):
         try:
@@ -313,17 +312,28 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                 current_gallery_images: fav_list_state # 或者保持 current_gallery_images 不变
             }
         selected_image_path = evt.value
-        print(f"Refinement: Clicked on result image '{os.path.basename(selected_image_path)}' to start new search.") # Stage 4
-        if selected_image_path and os.path.exists(selected_image_path):
+        # print(selected_image_path.keys()) # dict_keys(['image', 'caption'])
+        # print(selected_image_path['image'])
+        '''
+        {'path': '/private/var/folders/b9/2xhwm2611txf909_8lzpg05h0000gn/T/gradio/c3145af88ad5bf1a7bb2fa24775667a373d9767ae4accee1be03822c835d7b00/Asparagus_001.jpg', 
+        'url': 'http://127.0.0.1:7860/gradio_api/file=/private/var/folders/b9/2xhwm2611txf909_8lzpg05h0000gn/T/gradio/c3145af88ad5bf1a7bb2fa24775667a373d9767ae4accee1be03822c835d7b00/Asparagus_001.jpg', 
+        'size': None, 
+        'orig_name': 'Asparagus_001.jpg', 
+        'mime_type': 'image/jpeg', 
+        'is_stream': False, 
+        'meta': {'_type': 'gradio.FileData'}}
+        '''
+        print(f"Refinement: Clicked on result image '{os.path.basename(selected_image_path['image']['path'])}' to start new search.") # Stage 4
+        if selected_image_path['image']['path'] and os.path.exists(selected_image_path['image']['path']):
             try:
-                pil_image = Image.open(selected_image_path)
+                pil_image = Image.open(selected_image_path['image']['path'])
                 # 执行以图搜图
                 new_gallery_paths, message, updated_fav_list_state = handle_image_search(pil_image, fav_list_state)
                 return {
                     results_gallery: new_gallery_paths,
                     search_status_message: message,
                     action_buttons_row: gr.Row(visible=True), # 显示操作按钮
-                    selected_image_path_for_actions: selected_image_path, # 设置当前选中图片以备操作
+                    selected_image_path_for_actions: selected_image_path['image']['path'], # 设置当前选中图片以备操作
                     current_gallery_images: new_gallery_paths # 更新当前画廊图片
                 }
             except Exception as e:
