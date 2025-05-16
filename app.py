@@ -22,7 +22,6 @@ else:
     device = torch.device("cpu")
 
 try:
-
     model = CLIPModel.from_pretrained(model_name).to(device)
     processor = CLIPProcessor.from_pretrained(model_name, use_fast=True)
     print("CLIP model and processor loaded.")
@@ -335,7 +334,6 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                     action_buttons_row: gr.Row(visible=False),
                     selected_image_path_for_actions: None,
                     current_gallery_images: fav_list_state
-                
                 }
         else:
             no_path_msg = "选中的图片路径无效。"
