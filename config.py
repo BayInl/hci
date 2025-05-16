@@ -1,0 +1,5 @@
+UPSTASH_VECTOR_URL = "https://proud-raven-72500-us1-vector.upstash.io"
+UPSTASH_VECTOR_TOKEN = "ABUFMHByb3VkLXJhdmVuLTcyNTAwLXVzMWFkbWluT0dRNFlUSmtNell0WkdRellTMDBaalk1TFRobU56a3ROakZoWm1NME1Ea3lOamxo"
+IMAGE_DATASET_PATH = "GroceryStoreDataset/dataset/train"
+DOWNLOAD_DIR = "temp_downloads"
+model_name = "openai/clip-vit-base-patch32"
