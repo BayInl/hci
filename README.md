@@ -46,10 +46,15 @@ pip install git+https://github.com/openai/CLIP.git
 git clone https://github.com/marcusklasson/GroceryStoreDataset.git
 ```
 
-### 运行应用
+### 运行预处理程序
+```bash
+python preprocess_data.py
+```
+
+### 运行主程序
 
 ```bash
-python image_search_app.py
+python app.py
 ```
 
 应用将在本地启动，并提供一个可以通过浏览器访问的URL。
@@ -83,8 +88,3 @@ python image_search_app.py
 ## 数据集
 
 本项目使用[GroceryStoreDataset](https://github.com/marcusklasson/GroceryStoreDataset)作为示例数据集，该数据集包含超市商品的图像。
-
-## 注意事项
-
-- 本项目使用本地实现的向量存储来模拟Upstash Vector功能，在实际生产环境中，应当使用完整的Upstash Vector服务
-- 为了演示目的，默认只处理数据集中的前50张图片，可以根据需要调整 
